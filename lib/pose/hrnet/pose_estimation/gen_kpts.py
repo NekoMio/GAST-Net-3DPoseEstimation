@@ -257,8 +257,8 @@ def gen_video_kpts(video, det_dim=416, num_peroson=1, gen_output=False):
             for i, score in enumerate(maxvals):
                 scores[i] = score.squeeze()
 
-            last_kpts = kpts.clone()
-            last_scores = scores.clone()
+            last_kpts = kpts.copy()
+            last_scores = scores.copy()
             kpts_result.append(kpts)
             scores_result.append(scores)
 

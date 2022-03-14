@@ -196,6 +196,9 @@ def gen_video_kpts(video, det_dim=416, num_peroson=1, gen_output=False):
 
     kpts_result = []
     scores_result = []
+    
+    last_kpts, last_scores = [], []
+    
     for i in tqdm(range(video_length)):
         ret, frame = cap.read()
         if not ret:
@@ -206,6 +209,8 @@ def gen_video_kpts(video, det_dim=416, num_peroson=1, gen_output=False):
 
             if bboxs is None or not bboxs.any():
                 print('No person detected!')
+                kpts_result.append(last_kpts)
+                scores_result.append(last_scores)
                 # print('FPS of the video is {:5.2f}'.format(1 / (time.time() - start)))
                 continue
 
@@ -252,6 +257,8 @@ def gen_video_kpts(video, det_dim=416, num_peroson=1, gen_output=False):
             for i, score in enumerate(maxvals):
                 scores[i] = score.squeeze()
 
+            last_kpts = kpts.clone()
+            last_scores = scores.clone()
             kpts_result.append(kpts)
             scores_result.append(scores)
 
